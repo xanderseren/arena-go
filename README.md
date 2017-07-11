@@ -19,14 +19,4 @@ client := arena.NewClient(token)
 
 ## todo
 
-- tests
-- documentation
-- authentication flow
-
-## api parity progress
-
-- [ ] Authentication
-- [ ] Blocks
-- [ ] Channels
-- [ ] Search
-- [ ] Users
+- ...
