@@ -11,9 +11,9 @@ type Channel struct {
 /**
  * Channel retrieves a channel by its ID.
  */
-func (c *Client) GetChannel(channelID string, args Arguments) (channel *Channel, err error) {
+func (c *Client) GetChannel(channelID string) (channel *Channel, err error) {
 	path := fmt.Sprintf("channels/%s", channelID)
-	err = c.Get(path, args, &channel)
+	err = c.Get(path, &channel)
 	if channel != nil {
 		channel.client = c
 	}
