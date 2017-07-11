@@ -25,3 +25,11 @@ A Golang interface to the [are.na](https://www.are.na/) [API](https://dev.are.na
 - [ ] Channels
 - [ ] Search
 - [ ] Users
+
+## Basic Usage
+
+All interaction starts with a `trello.Client`. Create one with your appKey and token:
+
+```Go
+client := trello.NewClient(appKey, token)
+```
