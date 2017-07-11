@@ -37,7 +37,9 @@ func (c *Client) Get(path string, target interface{}) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	// urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	req, err := http.NewRequest("GET", "", nil)
+	// params := args.ToURLValues()
+	// urlWithParams := fmt.Sprintf("%s?%s", url)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return errors.Wrapf(err, "Invalid GET request %s", url)
 	}
