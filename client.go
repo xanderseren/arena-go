@@ -15,12 +15,12 @@ type Client struct {
 
 // NewClient returns a Client configured with sane default
 // values.
-func NewClient(key) *Client {
+func NewClient(token) *Client {
 	return &Client{
 		http.DefaultClient,
 		Config{
 			UseHTTPS: true,
-      key: key
+      Token: token
 		},
 	}
 }
@@ -39,10 +39,6 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
-
-	if c.Key != "" {
-		params.Set("key", c.Key)
-	}
 
 	if c.Token != "" {
 		params.Set("token", c.Token)

@@ -9,7 +9,13 @@ A Golang interface to the [are.na](https://www.are.na/) [API](https://dev.are.na
 ## usage
 
     import "github.com/xanderseren/arena-go"
-    arena.access_token = my_access_token
+
+    All interaction starts with a `arena.Client`. Create one with your token:
+
+    ```Go
+    client := arena.NewClient(token)
+    ```
+
     arena.channels.channel('faq')
 
 ## todo
@@ -25,11 +31,3 @@ A Golang interface to the [are.na](https://www.are.na/) [API](https://dev.are.na
 - [ ] Channels
 - [ ] Search
 - [ ] Users
-
-## Basic Usage
-
-All interaction starts with a `trello.Client`. Create one with your appKey and token:
-
-```Go
-client := trello.NewClient(appKey, token)
-```
