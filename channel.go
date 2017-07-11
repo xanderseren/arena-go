@@ -2,7 +2,7 @@ package arena
 
 import "fmt"
 
-type Board struct {
+type Channel struct {
 	client *Client
 	ID     string `json:"id"`
 	Title  string `json:"title"`
