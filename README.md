@@ -8,15 +8,16 @@ A Golang interface to the [are.na](https://www.are.na/) [API](https://dev.are.na
 
 ## usage
 
-All interaction starts with a `arena.Client`. Create one with your token:
+All interaction starts with a `arena.Client`:
 
 ```Go
-import "github.com/xanderseren/arena-go"
+import arena "github.com/xanderseren/arena-go"
 
-client := arena.NewClient(token)
-arena.GetChannel(channelID)
+client := arena.NewClient()
+arena.GetChannel(channelID) //channel ID or slug
+arena.GetBlock(blockID) // block ID or slug
 ```    
 
 ## todo
 
-- todo
+- Add token stuff
