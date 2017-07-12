@@ -10,6 +10,7 @@ import (
 )
 
 func getChannel(w http.ResponseWriter, r *http.Request) {
+	// Grabs this channel https://api.are.na/v2/channels/golang
 	arena := arena.NewClient()
 	channel, err := arena.GetChannel("60260")
 
