@@ -18,7 +18,7 @@ type Block struct {
 	Description     *string          `json:"description"`
 	Source          SourceStruct     `json:"source"`
 	Image           ImageStruct      `json:"image"`
-	Embed           EmbedStruct      `json:embed`
+	Embed           EmbedStruct      `json:"embed"`
 	Attachment      AttachmentStruct `json:"attachment"`
 	Metadata        MetadataStruct   `json:"metadata"`
 	BaseClass       string           `json:"base_class"`
