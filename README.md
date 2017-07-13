@@ -23,7 +23,7 @@ arena.GetBlock(blockID) // block ID or slug
 - [x] Authentication
 - [ ] Better methods solution for various Block and Channel calls
 
-BLOCKS
+### BLOCKS
 - [x] GET /v2/blocks/:id
 - [ ] GET /v2/blocks/:id/channels
 - [ ] POST /v2/channels/:slug/blocks
@@ -31,7 +31,7 @@ BLOCKS
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [ ] DELETE /v2/channel/:channel_id/blocks/:id
 
-CHANNELS
+### CHANNELS
 - [ ] GET /v2/channels
 - [x] GET /v2/channels/:slug
 - [ ] GET /v2/channels/:slug/thumb
@@ -48,14 +48,14 @@ CHANNELS
 - [ ] POST /v2/channels/:id/collaborators
 - [ ] DELETE /v2/channels/:id/collaborators
 
-USERS
+### USERS
 - [ ] GET /v2/users/:id
 - [ ] GET /v2/users/:id/channel
 - [ ] GET /v2/users/:id/channels
 - [ ] GET /v2/users/:id/following
 - [ ] GET /v2/users/:id/followers
 
-SEARCH
+### SEARCH
 - [ ] GET /v2/search?q=:q
 - [ ] GET /v2/search/users?q=:q
 - [ ] GET /v2/search/channels?q=:q
