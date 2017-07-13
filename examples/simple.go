@@ -12,6 +12,12 @@ import (
 	arena "github.com/xanderseren/arena-go"
 )
 
+type EditBlockStruct struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+	Content     *string `json:"content"`
+}
+
 func getChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
 	err := godotenv.Load()
@@ -60,9 +66,36 @@ func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 }
 
+// func editBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+// 	// Grabs this channel https://api.are.na/v2/channels/golang
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		log.Fatal("Error loading .env file")
+// 	}
+//
+// 	e := EditBlockStruct{}
+//
+// 	token := os.Getenv("ARENA_TOKEN")
+// 	arena := arena.NewClient(token)
+// 	block, err := arena.EditBlock(p.ByName("block"), nil)
+//
+// 	if err != nil {
+//     w.WriteHeader(200)
+// 		fmt.Fprintf(w, "%s", err)
+// 	} else {
+// 		ej, _ := json.Marshal(block)
+//
+// 		// Write content-type, statuscode, payload
+// 		w.Header().Set("Content-Type", "application/json")
+// 		w.WriteHeader(200)
+// 		fmt.Fprintf(w, "%s", ej)
+// 	}
+// }
+
 func main() {
 	router := httprouter.New()
 	router.GET("/channels/:channel", getChannel)
 	router.GET("/blocks/:block", getBlock)
+	// router.GET("/blocks/:block", editBlock)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
