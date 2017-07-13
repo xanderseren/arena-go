@@ -20,4 +20,45 @@ arena.GetBlock(blockID) // block ID or slug
 
 ## todo
 
-- Add token stuff
+- [x] Authentication
+- [ ] Better methods solution for various Block and Channel calls
+
+BLOCKS
+- [x] GET /v2/blocks/:id
+- [ ] GET /v2/blocks/:id/channels
+- [ ] POST /v2/channels/:slug/blocks
+- [ ] PUT /v2/blocks/:id
+- [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
+- [ ] DELETE /v2/channel/:channel_id/blocks/:id
+- [x] Search
+- [x] Users
+
+CHANNELS
+- [ ] GET /v2/channels
+- [x] GET /v2/channels/:slug
+- [ ] GET /v2/channels/:slug/thumb
+- [ ] GET /v2/channels/:id/connections
+- [ ] GET /v2/channels/:id/connections
+- [ ] GET /v2/channels/:id/contents
+- [ ] POST /v2/channels
+- [ ] PUT /v2/channels/:slug
+- [ ] PUT /v2/channels/:slug/sort
+- [ ] DELETE /v2/channels/:slug
+- [ ] POST /v2/channels/:slug/blocks
+- [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
+- [ ] GET /v2/channels/:id/collaborators
+- [ ] POST /v2/channels/:id/collaborators
+- [ ] DELETE /v2/channels/:id/collaborators
+
+USERS
+- [ ] GET /v2/users/:id
+- [ ] GET /v2/users/:id/channel
+- [ ] GET /v2/users/:id/channels
+- [ ] GET /v2/users/:id/following
+- [ ] GET /v2/users/:id/followers
+
+SEARCH
+- [ ] GET /v2/search?q=:q
+- [ ] GET /v2/search/users?q=:q
+- [ ] GET /v2/search/channels?q=:q
+- [ ] GET /v2/search/blocks?q=:q
