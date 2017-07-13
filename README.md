@@ -13,7 +13,7 @@ All interaction starts with a `arena.Client`:
 ```Go
 import arena "github.com/xanderseren/arena-go"
 
-client := arena.NewClient()
+client := arena.NewClient(token)
 arena.GetChannel(channelID) //channel ID or slug
 arena.GetBlock(blockID) // block ID or slug
 ```    

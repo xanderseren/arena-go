@@ -41,7 +41,7 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
 	if c.Token != "" {
-		params.Set("token", c.Token)
+		params.Set("access_token", c.Token)
 	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
@@ -76,7 +76,7 @@ func (c *Client) Put(path string, args Arguments, target interface{}) error {
 	c.Logger.Debugf("PUT request to %s?%s", path, params.Encode())
 
 	if c.Token != "" {
-		params.Set("token", c.Token)
+		params.Set("access_token", c.Token)
 	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
@@ -110,7 +110,7 @@ func (c *Client) Post(path string, args Arguments, target interface{}) error {
 	params := args.ToURLValues()
 
 	if c.Token != "" {
-		params.Set("token", c.Token)
+		params.Set("access_token", c.Token)
 	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)

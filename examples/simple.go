@@ -44,7 +44,6 @@ func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 
 	token := os.Getenv("ARENA_TOKEN")
-	fmt.Println(token)
 	arena := arena.NewClient(token)
 	block, err := arena.GetBlock(p.ByName("block"), nil)
 
