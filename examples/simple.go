@@ -5,14 +5,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/julienschmidt/httprouter"
 	arena "github.com/xanderseren/arena-go"
 )
 
 func getChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
-	arena := arena.NewClient()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	token := os.Getenv("ARENA_TOKEN")
+	arena := arena.NewClient(token)
 	channel, err := arena.GetChannel(p.ByName("channel"), nil)
 
 	if err != nil {
@@ -30,7 +38,14 @@ func getChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 
 func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
-	arena := arena.NewClient()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	token := os.Getenv("ARENA_TOKEN")
+	fmt.Println(token)
+	arena := arena.NewClient(token)
 	block, err := arena.GetBlock(p.ByName("block"), nil)
 
 	if err != nil {

@@ -18,11 +18,12 @@ type Client struct {
 	client  *http.Client
 	Logger  *logrus.Logger
 	BaseURL string
+	Token   string
 }
 
 // NewClient returns a Client configured with sane default
 // values.
-func NewClient() *Client {
+func NewClient(token string) *Client {
 	logger := logrus.New()
 	logger.Level = logrus.WarnLevel
 
@@ -30,6 +31,7 @@ func NewClient() *Client {
 		client:  http.DefaultClient,
 		BaseURL: "https://api.are.na/v2/",
 		Logger:  logger,
+		Token:   token,
 	}
 }
 
@@ -38,13 +40,9 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
-	// if c.Key != "" {
-	// 	params.Set("key", c.Key)
-	// }
-	//
-	// if c.Token != "" {
-	// 	params.Set("token", c.Token)
-	// }
+	if c.Token != "" {
+		params.Set("token", c.Token)
+	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
@@ -77,13 +75,9 @@ func (c *Client) Put(path string, args Arguments, target interface{}) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("PUT request to %s?%s", path, params.Encode())
 
-	// if c.Key != "" {
-	// 	params.Set("key", c.Key)
-	// }
-	//
-	// if c.Token != "" {
-	// 	params.Set("token", c.Token)
-	// }
+	if c.Token != "" {
+		params.Set("token", c.Token)
+	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
@@ -114,13 +108,10 @@ func (c *Client) Put(path string, args Arguments, target interface{}) error {
 func (c *Client) Post(path string, args Arguments, target interface{}) error {
 
 	params := args.ToURLValues()
-	// if c.Key != "" {
-	// 	params.Set("key", c.Key)
-	// }
-	//
-	// if c.Token != "" {
-	// 	params.Set("token", c.Token)
-	// }
+
+	if c.Token != "" {
+		params.Set("token", c.Token)
+	}
 
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())

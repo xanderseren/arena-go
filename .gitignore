@@ -1,0 +1,13 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# .env
+*.env
+
+_testmain.go
+
+*.exe
+*.test
+*.prof
