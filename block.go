@@ -1,9 +1,6 @@
 package arena
 
-import (
-	"encoding/json"
-	"net/http"
-)
+import "fmt"
 
 type Block struct {
 	client    *Client
@@ -14,39 +11,12 @@ type Block struct {
 	Slug      string `json:"slug"`
 }
 
-// doBlockRequest handles GET request for Block
-func (c *Client) doBlockRequest(blockID string) (Block, error) {
-	var block Block
-
-	path := c.BaseURL + "blocks/" + blockID
-	req, err := http.NewRequest("GET", path, nil)
-	if err != nil {
-		return block, err
+// GetBlock returns a channel based on the ID
+func (c *Client) GetBlock(blockID string, args Arguments) (block *Block, err error) {
+	path := fmt.Sprintf("blocks/%s", blockID)
+	err = c.Get(path, args, &block)
+	if block != nil {
+		block.client = c
 	}
-
-	body, err := c.do(req)
-	if err != nil {
-		return block, err
-	}
-	defer body.Close()
-
-	if err := json.NewDecoder(body).Decode(&block); err != nil {
-		return block, err
-	}
-	return block, nil
+	return
 }
-
-// Block returns the block via the ID or Slug
-func (c *Client) GetBlock(blockID string) (Block, error) {
-	return c.doBlockRequest(blockID)
-}
-
-// // GetBlock retrieves a block by its ID or Slug.
-// func (c *Client) GetBlock(blockID string) (block *Block, err error) {
-// 	path := fmt.Sprintf("blocks/%s", blockID)
-// 	err = c.Get(path, &block)
-// 	if block != nil {
-// 		block.client = c
-// 	}
-// 	return
-// }

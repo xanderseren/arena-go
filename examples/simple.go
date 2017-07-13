@@ -13,7 +13,7 @@ import (
 func getChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
 	arena := arena.NewClient()
-	channel, err := arena.GetChannel(p.ByName("channel"))
+	channel, err := arena.GetChannel(p.ByName("channel"), nil)
 
 	if err != nil {
 		w.WriteHeader(200)
@@ -31,7 +31,7 @@ func getChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
 	arena := arena.NewClient()
-	block, err := arena.GetBlock(p.ByName("block"))
+	block, err := arena.GetBlock(p.ByName("block"), nil)
 
 	if err != nil {
 		w.WriteHeader(200)

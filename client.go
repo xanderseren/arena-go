@@ -1,78 +1,152 @@
 package arena
 
 import (
-	"io"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
+
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 // Client represents the HTTP client
 // and any settings used to make requests
 // to the arena API.
 type Client struct {
-	HTTPClient *http.Client
-	BaseURL    string
+	client  *http.Client
+	Logger  *logrus.Logger
+	BaseURL string
 }
 
 // NewClient returns a Client configured with sane default
 // values.
 func NewClient() *Client {
+	logger := logrus.New()
+	logger.Level = logrus.WarnLevel
+
 	return &Client{
-		HTTPClient: http.DefaultClient,
-		BaseURL:    "https://api.are.na/v2/",
+		client:  http.DefaultClient,
+		BaseURL: "https://api.are.na/v2/",
+		Logger:  logger,
 	}
 }
 
-// Get returns blah
-// func (c *Client) Get(path string, target interface{}) error {
-//
-// 	// params := args.ToURLValues()
-// 	// c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
-//
-// 	// if c.Token != "" {
-// 	// 	params.Set("token", c.Token)
-// 	// }
-//
-// 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
-// 	// urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
-//
-// 	// params := args.ToURLValues()
-// 	// urlWithParams := fmt.Sprintf("%s?%s", url)
-// 	req, err := http.NewRequest("GET", url, nil)
-// 	if err != nil {
-// 		return errors.Wrapf(err, "Invalid GET request %s", url)
-// 	}
-//
-// 	resp, err := c.client.Do(req)
-// 	if err != nil {
-// 		return errors.Wrapf(err, "HTTP request failure on %s", url)
-// 	}
-// 	defer resp.Body.Close()
-// 	if resp.StatusCode != 200 {
-// 		return makeHttpClientError(url, resp)
-// 	}
-//
-// 	decoder := json.NewDecoder(resp.Body)
-// 	err = decoder.Decode(target)
-// 	if err != nil {
-// 		return errors.Wrapf(err, "JSON decode failed on %s", url)
-// 	}
-//
-// 	return nil
-// }
+func (c *Client) Get(path string, args Arguments, target interface{}) error {
 
-// do performs a http request. If there is no error, the caller is responsible
-// for closing the returned response body.
-func (c *Client) do(req *http.Request) (io.ReadCloser, error) {
-	res, err := c.HTTPClient.Do(req)
+	params := args.ToURLValues()
+	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
+	// if c.Key != "" {
+	// 	params.Set("key", c.Key)
+	// }
+	//
+	// if c.Token != "" {
+	// 	params.Set("token", c.Token)
+	// }
+
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
+
+	req, err := http.NewRequest("GET", urlWithParams, nil)
 	if err != nil {
-		return nil, err
+		return errors.Wrapf(err, "Invalid GET request %s", url)
 	}
 
-	if res.StatusCode != 200 {
-		res.Body.Close()
-		return nil, newStatusError(res.StatusCode)
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP request failure on %s", url)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return makeHttpClientError(url, resp)
 	}
 
-	return res.Body, nil
+	decoder := json.NewDecoder(resp.Body)
+	err = decoder.Decode(target)
+	if err != nil {
+		return errors.Wrapf(err, "JSON decode failed on %s", url)
+	}
+
+	return nil
+}
+
+func (c *Client) Put(path string, args Arguments, target interface{}) error {
+
+	params := args.ToURLValues()
+	c.Logger.Debugf("PUT request to %s?%s", path, params.Encode())
+
+	// if c.Key != "" {
+	// 	params.Set("key", c.Key)
+	// }
+	//
+	// if c.Token != "" {
+	// 	params.Set("token", c.Token)
+	// }
+
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
+
+	req, err := http.NewRequest("PUT", urlWithParams, nil)
+	if err != nil {
+		return errors.Wrapf(err, "Invalid PUT request %s", url)
+	}
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP request failure on %s", url)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return makeHttpClientError(url, resp)
+	}
+
+	decoder := json.NewDecoder(resp.Body)
+	err = decoder.Decode(target)
+	if err != nil {
+		return errors.Wrapf(err, "JSON decode failed on %s", url)
+	}
+
+	return nil
+}
+
+func (c *Client) Post(path string, args Arguments, target interface{}) error {
+
+	params := args.ToURLValues()
+	// if c.Key != "" {
+	// 	params.Set("key", c.Key)
+	// }
+	//
+	// if c.Token != "" {
+	// 	params.Set("token", c.Token)
+	// }
+
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
+
+	req, err := http.NewRequest("POST", urlWithParams, nil)
+	if err != nil {
+		return errors.Wrapf(err, "Invalid POST request %s", url)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP request failure on %s", url)
+	}
+	defer resp.Body.Close()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP Read error on response for %s", url)
+	}
+
+	decoder := json.NewDecoder(bytes.NewBuffer(b))
+	err = decoder.Decode(target)
+	if err != nil {
+		return errors.Wrapf(err, "JSON decode failed on %s:\n%s", url, string(b))
+	}
+
+	return nil
 }
