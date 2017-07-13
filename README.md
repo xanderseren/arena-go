@@ -30,8 +30,6 @@ BLOCKS
 - [ ] PUT /v2/blocks/:id
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [ ] DELETE /v2/channel/:channel_id/blocks/:id
-- [x] Search
-- [x] Users
 
 CHANNELS
 - [ ] GET /v2/channels
