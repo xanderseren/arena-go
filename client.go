@@ -19,6 +19,10 @@ type Client struct {
 	Logger  *logrus.Logger
 	BaseURL string
 	Token   string
+
+	Search   *SearchService
+	Blocks   *BlocksService
+	Channels *ChannelsService
 }
 
 // NewClient returns a Client configured with sane default
@@ -27,12 +31,26 @@ func NewClient(token string) *Client {
 	logger := logrus.New()
 	logger.Level = logrus.WarnLevel
 
-	return &Client{
+	c := &Client{
 		client:  http.DefaultClient,
 		BaseURL: "https://api.are.na/v2",
 		Logger:  logger,
 		Token:   token,
 	}
+
+	c.Channels = &ChannelsService{
+		client: c,
+	}
+
+	c.Blocks = &BlocksService{
+		client: c,
+	}
+
+	c.Search = &SearchService{
+		client: c,
+	}
+
+	return c
 }
 
 func (c *Client) Get(path string, args Arguments, target interface{}) error {

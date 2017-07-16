@@ -1,6 +1,19 @@
 package arena
 
-type Search struct {
+// type Search []int
+//
+// type Search interface {
+//   All() string
+// 	Blocks() string
+// 	Channels() string
+// }
+
+// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+type SearchService struct {
+	client         *Client
+}
+
+type SearchStruct struct {
 	client        *Client
 	Term          string            `json:"term"`
 	Per           int               `json:"per"`
@@ -68,29 +81,29 @@ type SearchedChannel struct {
 
 // Search allows an authenticated user to search anime titles. Upon failure it
 // will return ErrNoContent.
-func (c *Client) Search(args Arguments) (search *Search, err error) {
-	path := "search"
-	err = c.Get(path, args, &search)
-	if search != nil {
-		search.client = c
-	}
-	return
-}
+// func (c *Client) Search(args Arguments) (searchStruct *SearchStruct, err error) {
+// 	path := "search"
+// 	err = c.Get(path, args, &searchStruct)
+// 	if search != nil {
+// 		search.client = c
+// 	}
+// 	return
+// }
 
 // Search allows an authenticated user to search anime titles. Upon failure it
 // will return ErrNoContent.
-func (c *Client) SearchBlocks(args Arguments) (search *Search, err error) {
-	path := "search/blocks"
-	err = c.Get(path, args, &search)
-	if search != nil {
-		search.client = c
-	}
-	return
-}
+// func (s *SearchService) SearchBlocks(args Arguments) (searchStruct *SearchStruct, err error) {
+// 	path := "search/blocks"
+// 	err = s.client.Get(path, args, &searchStruct)
+// 	if searchStruct != nil {
+// 		searchStruct.client = s.client
+// 	}
+// 	return
+// }
 
 // Search allows an authenticated user to search anime titles. Upon failure it
 // will return ErrNoContent.
-func (c *Client) SearchChannels(args Arguments) (search *Search, err error) {
+func (c *Client) SearchChannels(args Arguments) (search *SearchStruct, err error) {
 	path := "search/channels"
 	err = c.Get(path, args, &search)
 	if search != nil {

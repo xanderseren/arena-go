@@ -14,18 +14,19 @@ All interaction starts with a `arena.Client`:
 import arena "github.com/xanderseren/arena-go"
 
 client := arena.NewClient(token)
-arena.GetChannel(channelID) //channel ID or slug
-arena.GetBlock(blockID) // block ID or slug
+block, err := client.Blocks.Get(blockID, nil) // blockID can be ID or Slug
+fmt.Println(block.Title)
+
 ```    
 
 ## todo
 
 - [x] Authentication
-- [ ] Better methods solution for various Block and Channel calls
+- [x] Better interface solution for various Block and Channel functions
 
 #### Blocks
-- [x] GET /v2/blocks/:id
-- [ ] GET /v2/blocks/:id/channels
+- [x] GET /v2/blocks/:id arena.Blocks.Get(ID, arguments)
+- [x] GET /v2/blocks/:id/channels arena.Blocks.ListChannels(ID, arguments)
 - [ ] POST /v2/channels/:slug/blocks
 - [ ] PUT /v2/blocks/:id
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
@@ -33,11 +34,10 @@ arena.GetBlock(blockID) // block ID or slug
 
 #### Channels
 - [ ] GET /v2/channels
-- [x] GET /v2/channels/:slug
+- [x] GET /v2/channels/:slug arena.Channels.Get(ID, arguments)
 - [ ] GET /v2/channels/:slug/thumb
 - [ ] GET /v2/channels/:id/connections
-- [ ] GET /v2/channels/:id/connections
-- [ ] GET /v2/channels/:id/contents
+- [x] GET /v2/channels/:id/contents arena.Channels.Contents(ID, arguments)
 - [ ] POST /v2/channels
 - [ ] PUT /v2/channels/:slug
 - [ ] PUT /v2/channels/:slug/sort
@@ -58,5 +58,5 @@ arena.GetBlock(blockID) // block ID or slug
 #### Search
 - [ ] GET /v2/search?q=:q
 - [ ] GET /v2/search/users?q=:q
-- [ ] GET /v2/search/channels?q=:q
-- [ ] GET /v2/search/blocks?q=:q
+- [ ] GET /v2/search/channels?q=:q a.Channels.Search(arena.Arguments{"q": query})
+- [ ] GET /v2/search/blocks?q=:q a.Blocks.Search(arena.Arguments{"q": query})

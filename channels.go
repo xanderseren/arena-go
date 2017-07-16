@@ -2,6 +2,16 @@ package arena
 
 import "fmt"
 
+// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+type ChannelsService struct {
+	client *Client
+}
+
+type ChannelContents struct {
+	client   *Client
+	Contents []Block `json:"contents"`
+}
+
 type Channel struct {
 	client            *Client
 	ID                int            `json:"id"`
@@ -63,11 +73,21 @@ type MetadataStruct struct {
 }
 
 // GetChannel returns a channel based on the ID or slug
-func (c *Client) GetChannel(channelID string, args Arguments) (channel *Channel, err error) {
+func (s *ChannelsService) Get(channelID string, args Arguments) (channel *Channel, err error) {
 	path := fmt.Sprintf("channels/%s", channelID)
-	err = c.Get(path, args, &channel)
+	err = s.client.Get(path, args, &channel)
 	if channel != nil {
-		channel.client = c
+		channel.client = s.client
+	}
+	return
+}
+
+// GetChannel returns a channel based on the ID or slug
+func (s *ChannelsService) Contents(channelID string, args Arguments) (blocks *ChannelContents, err error) {
+	path := "channels/" + channelID + "/contents"
+	err = s.client.Get(path, args, &blocks)
+	if blocks != nil {
+		blocks.client = s.client
 	}
 	return
 }

@@ -2,6 +2,11 @@ package arena
 
 import "fmt"
 
+// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+type BlocksService struct {
+	client *Client
+}
+
 type Block struct {
 	client          *Client
 	ID              int              `json:"id"`
@@ -80,12 +85,32 @@ type AttachmentStruct *struct {
 	Url             string `json:"url"`
 }
 
-// GetBlock returns a channel based on the ID
-func (c *Client) GetBlock(blockID string, args Arguments) (block *Block, err error) {
+// Get returns a block based on the ID or Slug
+func (s *BlocksService) Get(blockID string, args Arguments) (block *Block, err error) {
 	path := fmt.Sprintf("blocks/%s", blockID)
-	err = c.Get(path, args, &block)
+	err = s.client.Get(path, args, &block)
 	if block != nil {
-		block.client = c
+		block.client = s.client
+	}
+	return
+}
+
+// Search returns a selection of blocks based on the search query q
+func (s *BlocksService) Search(args Arguments) (searchStruct *SearchStruct, err error) {
+	path := "search/blocks"
+	err = s.client.Get(path, args, &searchStruct)
+	if searchStruct != nil {
+		searchStruct.client = s.client
+	}
+	return
+}
+
+// Search returns a selection of blocks based on the search query q
+func (s *BlocksService) ListChannels(blockID string, args Arguments) (searchStruct *SearchStruct, err error) {
+	path := "blocks/" + blockID + "/channels"
+	err = s.client.Get(path, args, &searchStruct)
+	if searchStruct != nil {
+		searchStruct.client = s.client
 	}
 	return
 }
