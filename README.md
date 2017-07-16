@@ -25,8 +25,14 @@ fmt.Println(block.Title)
 - [x] Better interface solution for various Block and Channel functions
 
 #### Blocks
-- [x] GET /v2/blocks/:id arena.Blocks.Get(ID, arguments)
-- [x] GET /v2/blocks/:id/channels arena.Blocks.ListChannels(ID, arguments)
+- [x] GET /v2/blocks/:id
+```Go
+arena.Blocks.Get(ID, arguments)
+```    
+- [x] GET /v2/blocks/:id/channels
+```Go
+arena.Blocks.ListChannels(ID, arguments)
+```
 - [ ] POST /v2/channels/:slug/blocks
 - [ ] PUT /v2/blocks/:id
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
@@ -34,10 +40,16 @@ fmt.Println(block.Title)
 
 #### Channels
 - [ ] GET /v2/channels
-- [x] GET /v2/channels/:slug arena.Channels.Get(ID, arguments)
+- [x] GET /v2/channels/:slug
+```Go
+arena.Channels.Get(ID, arguments)
+```
 - [ ] GET /v2/channels/:slug/thumb
 - [ ] GET /v2/channels/:id/connections
-- [x] GET /v2/channels/:id/contents arena.Channels.Contents(ID, arguments)
+- [x] GET /v2/channels/:id/contents
+```Go
+arena.Channels.Contents(ID, arguments)
+```
 - [ ] POST /v2/channels
 - [ ] PUT /v2/channels/:slug
 - [ ] PUT /v2/channels/:slug/sort
@@ -58,5 +70,11 @@ fmt.Println(block.Title)
 #### Search
 - [ ] GET /v2/search?q=:q
 - [ ] GET /v2/search/users?q=:q
-- [ ] GET /v2/search/channels?q=:q a.Channels.Search(arena.Arguments{"q": query})
-- [ ] GET /v2/search/blocks?q=:q a.Blocks.Search(arena.Arguments{"q": query})
+- [x] GET /v2/search/channels?q=:q
+```Go
+arena.Channels.Search(arena.Arguments{"q": query})
+```
+- [ ] GET /v2/search/blocks?q=:q
+```Go
+arena.Blocks.Search(arena.Arguments{"q": query})
+```
