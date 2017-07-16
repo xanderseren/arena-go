@@ -29,7 +29,7 @@ func NewClient(token string) *Client {
 
 	return &Client{
 		client:  http.DefaultClient,
-		BaseURL: "https://api.are.na/v2/",
+		BaseURL: "https://api.are.na/v2",
 		Logger:  logger,
 		Token:   token,
 	}
@@ -50,41 +50,6 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	req, err := http.NewRequest("GET", urlWithParams, nil)
 	if err != nil {
 		return errors.Wrapf(err, "Invalid GET request %s", url)
-	}
-
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return errors.Wrapf(err, "HTTP request failure on %s", url)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return makeHttpClientError(url, resp)
-	}
-
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(target)
-	if err != nil {
-		return errors.Wrapf(err, "JSON decode failed on %s", url)
-	}
-
-	return nil
-}
-
-func (c *Client) Put(path string, args Arguments, target interface{}) error {
-
-	params := args.ToURLValues()
-	c.Logger.Debugf("PUT request to %s?%s", path, params.Encode())
-
-	if c.Token != "" {
-		params.Set("access_token", c.Token)
-	}
-
-	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
-	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
-
-	req, err := http.NewRequest("PUT", urlWithParams, nil)
-	if err != nil {
-		return errors.Wrapf(err, "Invalid PUT request %s", url)
 	}
 
 	resp, err := c.client.Do(req)

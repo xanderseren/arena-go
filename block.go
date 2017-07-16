@@ -90,12 +90,13 @@ func (c *Client) GetBlock(blockID string, args Arguments) (block *Block, err err
 	return
 }
 
-// EditBlock returns a channel based on the ID
-func (c *Client) EditBlock(blockID string, args Arguments) (block *Block, err error) {
-	path := fmt.Sprintf("blocks/%s", blockID)
-	err = c.Put(path, args, &block)
-	if block != nil {
-		block.client = c
-	}
-	return
-}
+//
+// // EditBlock returns a channel based on the ID
+// func (c *Client) EditBlock(blockID string, args Arguments) (block *Block, err error) {
+// 	path := fmt.Sprintf("blocks/%s", blockID)
+// 	err = c.Put(path, args, &block)
+// 	if block != nil {
+// 		block.client = c
+// 	}
+// 	return
+// }

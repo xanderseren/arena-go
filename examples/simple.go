@@ -66,6 +66,84 @@ func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 }
 
+func searchBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	// Grabs this channel https://api.are.na/v2/channels/golang
+	queryValues := r.URL.Query()
+	q := queryValues.Get("q")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	token := os.Getenv("ARENA_TOKEN")
+	a := arena.NewClient(token)
+	block, err := a.SearchBlocks(arena.Arguments{"q": q})
+
+	if err != nil {
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", err)
+	} else {
+		ej, _ := json.Marshal(block)
+
+		// Write content-type, statuscode, payload
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", ej)
+	}
+}
+
+func searchChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	// Grabs this channel https://api.are.na/v2/channels/golang
+	queryValues := r.URL.Query()
+	q := queryValues.Get("q")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	token := os.Getenv("ARENA_TOKEN")
+	a := arena.NewClient(token)
+	block, err := a.SearchChannels(arena.Arguments{"q": q})
+
+	if err != nil {
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", err)
+	} else {
+		ej, _ := json.Marshal(block)
+
+		// Write content-type, statuscode, payload
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", ej)
+	}
+}
+
+func search(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	// Grabs this channel https://api.are.na/v2/channels/golang
+	queryValues := r.URL.Query()
+	q := queryValues.Get("q")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	token := os.Getenv("ARENA_TOKEN")
+	a := arena.NewClient(token)
+	block, err := a.Search(arena.Arguments{"q": q})
+
+	if err != nil {
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", err)
+	} else {
+		ej, _ := json.Marshal(block)
+
+		// Write content-type, statuscode, payload
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		fmt.Fprintf(w, "%s", ej)
+	}
+}
+
 // func editBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 // 	// Grabs this channel https://api.are.na/v2/channels/golang
 // 	err := godotenv.Load()
@@ -96,6 +174,9 @@ func main() {
 	router := httprouter.New()
 	router.GET("/channels/:channel", getChannel)
 	router.GET("/blocks/:block", getBlock)
-	// router.GET("/blocks/:block", editBlock)
+	router.GET("/search/blocks", searchBlock)
+	router.GET("/search/channels", searchChannel)
+	router.GET("/search", search)
+	// router.PUT("/blocks/:block", editBlock)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
