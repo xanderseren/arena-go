@@ -46,6 +46,9 @@ arena.Channels.Get(ID, nil)
 ```
 - [ ] GET /v2/channels/:slug/thumb
 - [ ] GET /v2/channels/:id/connections
+```Go
+arena.Channels.Connections(ID, nil)
+```
 - [x] GET /v2/channels/:id/contents
 ```Go
 arena.Channels.Contents(ID, nil)
@@ -57,6 +60,9 @@ arena.Channels.Contents(ID, nil)
 - [ ] POST /v2/channels/:slug/blocks
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [ ] GET /v2/channels/:id/collaborators
+```Go
+arena.Channels.Collaborators(ID, nil)
+```
 - [ ] POST /v2/channels/:id/collaborators
 - [ ] DELETE /v2/channels/:id/collaborators
 

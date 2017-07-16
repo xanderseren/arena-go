@@ -12,6 +12,27 @@ type ChannelContents struct {
 	Contents []Block `json:"contents"`
 }
 
+type Connections struct {
+	client       *Client
+	Length       int       `json:"length"`
+	TotalPages   int       `json:"total_pages"`
+	CurrentPage  int       `json:"current_page"`
+	Per          int       `json:"per"`
+	ChannelTitle string    `json:"channel_title"`
+	BaseClass    string    `json:"base_class"`
+	Channels     []Channel `json:"channels"`
+}
+
+type Collaborators struct {
+	client       *Client
+	Length       int          `json:"length"`
+	TotalPages   int          `json:"total_pages"`
+	CurrentPage  int          `json:"current_page"`
+	Per          int          `json:"per"`
+	ChannelTitle string       `json:"channel_title"`
+	Users        []UserStruct `json:"users"`
+}
+
 type Channel struct {
 	client            *Client
 	ID                int            `json:"id"`
@@ -88,6 +109,26 @@ func (s *ChannelsService) Contents(channelID string, args Arguments) (blocks *Ch
 	err = s.client.Get(path, args, &blocks)
 	if blocks != nil {
 		blocks.client = s.client
+	}
+	return
+}
+
+// GetChannel returns a channel based on the ID or slug
+func (s *ChannelsService) Connections(channelID string, args Arguments) (connections *Connections, err error) {
+	path := "channels/" + channelID + "/connections"
+	err = s.client.Get(path, args, &connections)
+	if connections != nil {
+		connections.client = s.client
+	}
+	return
+}
+
+// GetChannel returns a channel based on the ID or slug
+func (s *ChannelsService) Collaborators(channelID string, args Arguments) (collaborators *Collaborators, err error) {
+	path := "channels/" + channelID + "/collaborators"
+	err = s.client.Get(path, args, &collaborators)
+	if collaborators != nil {
+		collaborators.client = s.client
 	}
 	return
 }
