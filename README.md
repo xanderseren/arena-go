@@ -27,11 +27,11 @@ fmt.Println(block.Title)
 #### Blocks
 - [x] GET /v2/blocks/:id
 ```Go
-arena.Blocks.Get(ID, arguments)
+arena.Blocks.Get(ID, nil)
 ```    
 - [x] GET /v2/blocks/:id/channels
 ```Go
-arena.Blocks.ListChannels(ID, arguments)
+arena.Blocks.ListChannels(ID, nil)
 ```
 - [ ] POST /v2/channels/:slug/blocks
 - [ ] PUT /v2/blocks/:id
@@ -42,13 +42,13 @@ arena.Blocks.ListChannels(ID, arguments)
 - [ ] GET /v2/channels
 - [x] GET /v2/channels/:slug
 ```Go
-arena.Channels.Get(ID, arguments)
+arena.Channels.Get(ID, nil)
 ```
 - [ ] GET /v2/channels/:slug/thumb
 - [ ] GET /v2/channels/:id/connections
 - [x] GET /v2/channels/:id/contents
 ```Go
-arena.Channels.Contents(ID, arguments)
+arena.Channels.Contents(ID, nil)
 ```
 - [ ] POST /v2/channels
 - [ ] PUT /v2/channels/:slug
