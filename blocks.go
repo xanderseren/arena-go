@@ -10,7 +10,6 @@ type BlocksService struct {
 type BlockEntry struct {
 	client  *Client
 	Content string `json:"content"`
-	Source  string `json:"source"`
 }
 
 type Block struct {

@@ -94,8 +94,8 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 }
 
 func (c *Client) Post(path string, args Arguments, target interface{}) error {
-
 	params := args.ToURLValues()
+	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
 	if c.Token != "" {
 		params.Set("access_token", c.Token)
@@ -104,11 +104,15 @@ func (c *Client) Post(path string, args Arguments, target interface{}) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	req, err := http.NewRequest("POST", urlWithParams, nil)
+	u := target
+	data := new(bytes.Buffer)
+	json.NewEncoder(data).Encode(u)
+	fmt.Println(data)
+
+	req, err := http.NewRequest("POST", urlWithParams, data)
 	if err != nil {
 		return errors.Wrapf(err, "Invalid POST request %s", url)
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -122,7 +126,7 @@ func (c *Client) Post(path string, args Arguments, target interface{}) error {
 	}
 
 	decoder := json.NewDecoder(bytes.NewBuffer(b))
-	err = decoder.Decode(target)
+	err = decoder.Decode(target) // This can't be target, really has to be Block struct but how?
 	if err != nil {
 		return errors.Wrapf(err, "JSON decode failed on %s:\n%s", url, string(b))
 	}
