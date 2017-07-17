@@ -46,7 +46,7 @@ arena.Blocks.ListChannels(ID, nil)
 arena.Channels.Get(ID, nil)
 ```
 - [ ] GET /v2/channels/:slug/thumb
-- [ ] GET /v2/channels/:id/connections
+- [x] GET /v2/channels/:id/connections
 ```Go
 arena.Channels.Connections(ID, nil)
 ```
@@ -60,7 +60,7 @@ arena.Channels.Contents(ID, nil)
 - [ ] DELETE /v2/channels/:slug
 - [ ] POST /v2/channels/:slug/blocks
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
-- [ ] GET /v2/channels/:id/collaborators
+- [x] GET /v2/channels/:id/collaborators
 ```Go
 arena.Channels.Collaborators(ID, nil)
 ```
@@ -76,12 +76,15 @@ arena.Channels.Collaborators(ID, nil)
 
 #### Search
 - [ ] GET /v2/search?q=:q
-- [ ] GET /v2/search/users?q=:q
+- [x] GET /v2/search/users?q=:q
+```Go
+arena.Users.Search(arena.Arguments{"q": query})
+```
 - [x] GET /v2/search/channels?q=:q
 ```Go
 arena.Channels.Search(arena.Arguments{"q": query})
 ```
-- [ ] GET /v2/search/blocks?q=:q
+- [x] GET /v2/search/blocks?q=:q
 ```Go
 arena.Blocks.Search(arena.Arguments{"q": query})
 ```

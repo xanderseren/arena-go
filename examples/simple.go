@@ -117,10 +117,8 @@ func searchBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 }
 
-func searchChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func postBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
-	queryValues := r.URL.Query()
-	q := queryValues.Get("q")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -128,7 +126,7 @@ func searchChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) 
 
 	token := os.Getenv("ARENA_TOKEN")
 	a := arena.NewClient(token)
-	block, err := a.SearchChannels(arena.Arguments{"q": q})
+	block, err := a.Blocks.Add(p.ByName("channel"), nil, arena.BlockEntry{Content: "Testing"})
 
 	if err != nil {
 		w.WriteHeader(200)
@@ -201,7 +199,7 @@ func main() {
 	router.GET("/channels/:channel/contents", getChannelContents)
 	router.GET("/blocks/:block", getBlock)
 	router.GET("/search/blocks", searchBlock)
-	router.GET("/search/channels", searchChannel)
+	router.POST("/channels/:channel/blocks", postBlock)
 	// router.GET("/search", search)
 	// router.PUT("/blocks/:block", editBlock)
 	log.Fatal(http.ListenAndServe(":8080", router))

@@ -7,6 +7,12 @@ type BlocksService struct {
 	client *Client
 }
 
+type BlockEntry struct {
+	client  *Client
+	Content string `json:"content"`
+	Source  string `json:"source"`
+}
+
 type Block struct {
 	client          *Client
 	ID              int              `json:"id"`
@@ -101,6 +107,15 @@ func (s *BlocksService) Search(args Arguments) (searchStruct *SearchStruct, err 
 	err = s.client.Get(path, args, &searchStruct)
 	if searchStruct != nil {
 		searchStruct.client = s.client
+	}
+	return
+}
+
+func (s *BlocksService) Add(channelID string, args Arguments, entry BlockEntry) (block *Block, err error) {
+	path := "channels/" + channelID + "/blocks"
+	err = s.client.Post(path, args, entry)
+	if block != nil {
+		block.client = s.client
 	}
 	return
 }
