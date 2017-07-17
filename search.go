@@ -100,14 +100,3 @@ type SearchedChannel struct {
 // 	}
 // 	return
 // }
-
-// Search allows an authenticated user to search anime titles. Upon failure it
-// will return ErrNoContent.
-func (c *Client) SearchChannels(args Arguments) (search *SearchStruct, err error) {
-	path := "search/channels"
-	err = c.Get(path, args, &search)
-	if search != nil {
-		search.client = c
-	}
-	return
-}

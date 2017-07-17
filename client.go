@@ -23,6 +23,7 @@ type Client struct {
 	Search   *SearchService
 	Blocks   *BlocksService
 	Channels *ChannelsService
+	Users    *UsersService
 }
 
 // NewClient returns a Client configured with sane default
@@ -43,6 +44,10 @@ func NewClient(token string) *Client {
 	}
 
 	c.Blocks = &BlocksService{
+		client: c,
+	}
+
+	c.Users = &UsersService{
 		client: c,
 	}
 

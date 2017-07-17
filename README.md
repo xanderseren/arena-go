@@ -23,6 +23,7 @@ fmt.Println(block.Title)
 
 - [x] Authentication
 - [x] Better interface solution for various Block and Channel functions
+- [ ] TESTS!!
 
 #### Blocks
 - [x] GET /v2/blocks/:id
