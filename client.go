@@ -93,7 +93,7 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	return nil
 }
 
-func (c *Client) Post(path string, args Arguments, target interface{}) error {
+func (c *Client) Post(path string, args Arguments, data interface{}, target interface{}) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
@@ -104,12 +104,12 @@ func (c *Client) Post(path string, args Arguments, target interface{}) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	u := target
-	data := new(bytes.Buffer)
-	json.NewEncoder(data).Encode(u)
-	fmt.Println(data)
+	u := data
+	d := new(bytes.Buffer)
+	json.NewEncoder(d).Encode(u)
+	fmt.Println(d)
 
-	req, err := http.NewRequest("POST", urlWithParams, data)
+	req, err := http.NewRequest("POST", urlWithParams, d)
 	if err != nil {
 		return errors.Wrapf(err, "Invalid POST request %s", url)
 	}
@@ -125,8 +125,11 @@ func (c *Client) Post(path string, args Arguments, target interface{}) error {
 		return errors.Wrapf(err, "HTTP Read error on response for %s", url)
 	}
 
+	fmt.Println(b)
+
 	decoder := json.NewDecoder(bytes.NewBuffer(b))
 	err = decoder.Decode(target) // This can't be target, really has to be Block struct but how?
+
 	if err != nil {
 		return errors.Wrapf(err, "JSON decode failed on %s:\n%s", url, string(b))
 	}

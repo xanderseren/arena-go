@@ -112,7 +112,7 @@ func (s *BlocksService) Search(args Arguments) (searchStruct *SearchStruct, err 
 
 func (s *BlocksService) Add(channelID string, args Arguments, entry BlockEntry) (block *Block, err error) {
 	path := "channels/" + channelID + "/blocks"
-	err = s.client.Post(path, args, entry)
+	err = s.client.Post(path, args, &entry, &block)
 	if block != nil {
 		block.client = s.client
 	}
