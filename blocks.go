@@ -1,6 +1,9 @@
 package arena
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+)
 
 // MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
 type BlocksService struct {
@@ -9,7 +12,7 @@ type BlocksService struct {
 
 type BlockEntry struct {
 	client  *Client
-	Content string `json:"content"`
+	Content string
 }
 
 type Block struct {
@@ -110,16 +113,35 @@ func (s *BlocksService) Search(args Arguments) (searchStruct *SearchStruct, err 
 	return
 }
 
-func (s *BlocksService) Add(channelID string, args Arguments, entry BlockEntry) (block *Block, err error) {
+func (s *BlocksService) AddContent(channelID string, entry string) (block *Block, err error) {
+
+	data := url.Values{
+		"content": {entry},
+	}
+	fmt.Println(data)
 	path := "channels/" + channelID + "/blocks"
-	err = s.client.Post(path, args, &entry, &block)
+	err = s.client.Post(path, nil, data, &block)
 	if block != nil {
 		block.client = s.client
 	}
 	return
 }
 
-// Search returns a selection of blocks based on the search query q
+func (s *BlocksService) AddSource(channelID string, entry string) (block *Block, err error) {
+
+	data := url.Values{
+		"source": {entry},
+	}
+	fmt.Println(data)
+	path := "channels/" + channelID + "/blocks"
+	err = s.client.Post(path, nil, data, &block)
+	if block != nil {
+		block.client = s.client
+	}
+	return
+}
+
+// ListChannels earch returns a selection of blocks based on the search query q
 func (s *BlocksService) ListChannels(blockID string, args Arguments) (searchStruct *SearchStruct, err error) {
 	path := "blocks/" + blockID + "/channels"
 	err = s.client.Get(path, args, &searchStruct)

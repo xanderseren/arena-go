@@ -126,7 +126,7 @@ func postBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 
 	token := os.Getenv("ARENA_TOKEN")
 	a := arena.NewClient(token)
-	block, err := a.Blocks.Add(p.ByName("channel"), nil, arena.BlockEntry{Content: "Testing"})
+	block, err := a.Blocks.AddSource(p.ByName("channel"), "http://youtube.com")
 
 	if err != nil {
 		w.WriteHeader(200)

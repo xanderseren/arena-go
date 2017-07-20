@@ -93,7 +93,7 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	return nil
 }
 
-func (c *Client) Post(path string, args Arguments, data interface{}, target interface{}) error {
+func (c *Client) Post(path string, args Arguments, data map[string][]string, target interface{}) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
@@ -104,20 +104,15 @@ func (c *Client) Post(path string, args Arguments, data interface{}, target inte
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	u := data
-	d := new(bytes.Buffer)
-	json.NewEncoder(d).Encode(u)
-	fmt.Println(d)
-
-	req, err := http.NewRequest("POST", urlWithParams, d)
+	resp, err := http.PostForm(urlWithParams, data)
 	if err != nil {
 		return errors.Wrapf(err, "Invalid POST request %s", url)
 	}
 
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return errors.Wrapf(err, "HTTP request failure on %s", url)
-	}
+	// resp, err := c.client.Do(req)
+	// if err != nil {
+	// 	return errors.Wrapf(err, "HTTP request failure on %s", url)
+	// }
 	defer resp.Body.Close()
 
 	b, err := ioutil.ReadAll(resp.Body)

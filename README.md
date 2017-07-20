@@ -35,6 +35,15 @@ arena.Blocks.Get(ID, nil)
 arena.Blocks.ListChannels(ID, nil)
 ```
 - [ ] POST /v2/channels/:slug/blocks
+```Go
+// channelID is slug or channel ID
+// Content is a string. Textual content that's rendered with Github Flavored Markdown.
+arena.Blocks.AddContent(channelID, content)
+
+// channelID is slug or channel ID
+// Source is a string. URL of content. Can be an Image, Embed, or Link.
+arena.Blocks.AddSource(channelID, source)
+```
 - [ ] PUT /v2/blocks/:id
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [ ] DELETE /v2/channel/:channel_id/blocks/:id
