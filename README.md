@@ -1,6 +1,6 @@
 # arena-go
 
-A Golang interface to the [are.na](https://www.are.na/) [API](https://dev.are.na/documentation). A work in progress. Partly using this to learn some basic Go stuff.
+A Golang wrapper for the [are.na](https://www.are.na/) [API](https://dev.are.na/documentation). A work in progress. Partly using this to learn some basic Go stuff.
 
 ## installation
 

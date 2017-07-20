@@ -66,7 +66,7 @@ func getChannelContents(w http.ResponseWriter, r *http.Request, p httprouter.Par
 	}
 }
 
-func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func editTitle(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
 	err := godotenv.Load()
 	if err != nil {
@@ -75,8 +75,7 @@ func getBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 
 	token := os.Getenv("ARENA_TOKEN")
 	arena := arena.NewClient(token)
-	block, err := arena.Blocks.Get(p.ByName("block"), nil)
-	fmt.Println(block.Title)
+	block, err := arena.Blocks.EditTitle(p.ByName("block"), "New Title")
 
 	if err != nil {
 		w.WriteHeader(200)
@@ -197,7 +196,7 @@ func main() {
 	router := httprouter.New()
 	router.GET("/channels/:channel", getChannel)
 	router.GET("/channels/:channel/contents", getChannelContents)
-	router.GET("/blocks/:block", getBlock)
+	router.PUT("/blocks/:block", editTitle)
 	router.GET("/search/blocks", searchBlock)
 	router.POST("/channels/", addChannel)
 	// router.GET("/search", search)
