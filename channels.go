@@ -1,6 +1,9 @@
 package arena
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+)
 
 // MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
 type ChannelsService struct {
@@ -105,6 +108,19 @@ func (s *ChannelsService) Collaborators(channelID string, args Arguments) (colla
 	err = s.client.Get(path, args, &collaborators)
 	if collaborators != nil {
 		collaborators.client = s.client
+	}
+	return
+}
+
+func (s *ChannelsService) Add(title string, status string) (channel *Channel, err error) {
+	data := url.Values{
+		"title":  {title},
+		"status": {status},
+	}
+	path := "channels/"
+	err = s.client.Post(path, nil, data, &channel)
+	if channel != nil {
+		channel.client = s.client
 	}
 	return
 }

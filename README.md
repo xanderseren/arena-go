@@ -21,9 +21,10 @@ fmt.Println(block.Title)
 
 ## todo
 
+- [ ] TESTS!!
+- [ ] Real documentation via comments
 - [x] Authentication
 - [x] Better interface solution for various Block and Channel functions
-- [ ] TESTS!!
 
 #### Blocks
 - [x] GET /v2/blocks/:id
@@ -36,11 +37,11 @@ arena.Blocks.ListChannels(ID, nil)
 ```
 - [ ] POST /v2/channels/:slug/blocks
 ```Go
-// channelID is slug or channel ID
+// channelID is channel slug or channel ID
 // Content is a string. Textual content that's rendered with Github Flavored Markdown.
 arena.Blocks.AddContent(channelID, content)
 
-// channelID is slug or channel ID
+// channelID is channel slug or channel ID
 // Source is a string. URL of content. Can be an Image, Embed, or Link.
 arena.Blocks.AddSource(channelID, source)
 ```
@@ -64,10 +65,24 @@ arena.Channels.Connections(ID, nil)
 arena.Channels.Contents(ID, nil)
 ```
 - [ ] POST /v2/channels
+```Go
+// title is the Title of the channel
+// Status sets the visibility of the channel. Can be: ["public", "closed", "private"]
+arena.Channels.Add(title, status)
+```
 - [ ] PUT /v2/channels/:slug
 - [ ] PUT /v2/channels/:slug/sort
 - [ ] DELETE /v2/channels/:slug
 - [ ] POST /v2/channels/:slug/blocks
+```Go
+// channelID is channel slug or channel ID
+// Content is a string. Textual content that's rendered with Github Flavored Markdown.
+arena.Blocks.AddContent(channelID, content)
+
+// channelID is channel slug or channel ID
+// Source is a string. URL of content. Can be an Image, Embed, or Link.
+arena.Blocks.AddSource(channelID, source)
+```
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [x] GET /v2/channels/:id/collaborators
 ```Go

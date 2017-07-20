@@ -117,7 +117,7 @@ func searchBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 }
 
-func postBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func addChannel(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
 	err := godotenv.Load()
 	if err != nil {
@@ -126,7 +126,7 @@ func postBlock(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 
 	token := os.Getenv("ARENA_TOKEN")
 	a := arena.NewClient(token)
-	block, err := a.Blocks.AddSource(p.ByName("channel"), "http://youtube.com")
+	block, err := a.Channels.Add("Testing new channel", "private")
 
 	if err != nil {
 		w.WriteHeader(200)
@@ -199,7 +199,7 @@ func main() {
 	router.GET("/channels/:channel/contents", getChannelContents)
 	router.GET("/blocks/:block", getBlock)
 	router.GET("/search/blocks", searchBlock)
-	router.POST("/channels/:channel/blocks", postBlock)
+	router.POST("/channels/", addChannel)
 	// router.GET("/search", search)
 	// router.PUT("/blocks/:block", editBlock)
 	log.Fatal(http.ListenAndServe(":8080", router))
