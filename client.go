@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -132,7 +134,7 @@ func (c *Client) Post(path string, args Arguments, data map[string][]string, tar
 	return nil
 }
 
-func (c *Client) Put(path string, args Arguments, data map[string][]string) error {
+func (c *Client) Put(path string, args Arguments, data url.Values) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
@@ -143,9 +145,12 @@ func (c *Client) Put(path string, args Arguments, data map[string][]string) erro
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	jsonString, err := json.Marshal(data)
+	// jsonString, err := json.Marshal(data)
+	fmt.Println(strings.NewReader(data.Encode()))
 
-	req, err := http.NewRequest("PUT", urlWithParams, bytes.NewBuffer(jsonString))
+	// strings.NewReader(data.Encode())
+	req, err := http.NewRequest("PUT", urlWithParams, strings.NewReader(data.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	if err != nil {
 		return errors.Wrapf(err, "Invalid PUT request %s", url)

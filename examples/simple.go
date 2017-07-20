@@ -73,7 +73,7 @@ func editTitle(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// 	log.Fatal("Error loading .env file")
 	// }
 	token := os.Getenv("ARENA_TOKEN")
-	arena := arena.NewClient(token)
+	a := arena.NewClient(token)
 	block, err := a.Blocks.EditTitle(p.ByName("block"), "New Title")
 
 	if err != nil {
