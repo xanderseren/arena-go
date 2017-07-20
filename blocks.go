@@ -147,7 +147,7 @@ func (s *BlocksService) EditTitle(blockID string, entry string) (block *Block, e
 		"title": {entry},
 	}
 	path := "blocks/" + blockID
-	err = s.client.Put(path, nil, data, &block)
+	err = s.client.Put(path, nil, data)
 	if block != nil {
 		block.client = s.client
 	}

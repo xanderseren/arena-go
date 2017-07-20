@@ -132,7 +132,7 @@ func (c *Client) Post(path string, args Arguments, data map[string][]string, tar
 	return nil
 }
 
-func (c *Client) Put(path string, args Arguments, data map[string][]string, target interface{}) error {
+func (c *Client) Put(path string, args Arguments, data map[string][]string) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
 
@@ -143,31 +143,33 @@ func (c *Client) Put(path string, args Arguments, data map[string][]string, targ
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	jsonValue, _ := json.Marshal(data)
-	req, err := http.NewRequest("PUT", urlWithParams, bytes.NewBuffer(jsonValue))
+	jsonString, err := json.Marshal(data)
+
+	req, err := http.NewRequest("PUT", urlWithParams, bytes.NewBuffer(jsonString))
+
 	if err != nil {
 		return errors.Wrapf(err, "Invalid PUT request %s", url)
 	}
 
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return errors.Wrapf(err, "HTTP request failure on %s", url)
-	}
-	defer resp.Body.Close()
-
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return errors.Wrapf(err, "HTTP Read error on response for %s", url)
-	}
-
-	fmt.Println(b)
-
-	decoder := json.NewDecoder(bytes.NewBuffer(b))
-	err = decoder.Decode(target) // This can't be target, really has to be Block struct but how?
-
-	if err != nil {
-		return errors.Wrapf(err, "JSON decode failed on %s:\n%s", url, string(b))
-	}
+	c.client.Do(req)
+	// if err != nil {
+	// 	return errors.Wrapf(err, "HTTP request failure on %s", url)
+	// }
+	// defer resp.Body.Close()
+	//
+	// b, err := ioutil.ReadAll(resp.Body)
+	// if err != nil {
+	// 	return errors.Wrapf(err, "HTTP Read error on response for %s", url)
+	// }
+	//
+	// fmt.Println(b)
+	//
+	// decoder := json.NewDecoder(bytes.NewBuffer(b))
+	// err = decoder.Decode(target) // This can't be target, really has to be Block struct but how?
+	//
+	// if err != nil {
+	// 	return errors.Wrapf(err, "JSON decode failed on %s:\n%s", url, string(b))
+	// }
 
 	return nil
 }

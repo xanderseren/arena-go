@@ -68,14 +68,13 @@ func getChannelContents(w http.ResponseWriter, r *http.Request, p httprouter.Par
 
 func editTitle(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Grabs this channel https://api.are.na/v2/channels/golang
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
-	token := os.Getenv("ARENA_TOKEN")
-	arena := arena.NewClient(token)
-	block, err := arena.Blocks.EditTitle(p.ByName("block"), "New Title")
+	a := arena.NewClient("c474a47e314ec884f8d462d906a8612af5969a8bca45e72a26c04d5f34215aaa")
+	block, err := a.Blocks.EditTitle(p.ByName("block"), "New Title")
 
 	if err != nil {
 		w.WriteHeader(200)
