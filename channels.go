@@ -125,6 +125,21 @@ func (s *ChannelsService) Add(title string, status string) (channel *Channel, er
 	return
 }
 
+// https://api.are.na/v2/channels/82803/connections
+func (s *ChannelsService) Connect(connectChannelID string, recipientChannelID string) (channel *Channel, err error) {
+	data := url.Values{
+		"connectable_id":   {connectChannelID},
+		"connectable_type": {"Channel"},
+	}
+	path := "channels/" + recipientChannelID + "/connections"
+	fmt.Println(path)
+	err = s.client.Post(path, nil, data, &channel)
+	if channel != nil {
+		channel.client = s.client
+	}
+	return
+}
+
 // GetChannelContents returns a channels contents based on the ID r slug
 // func (c *Client) GetChannelContents(channelID string, args Arguments) (channel *Channel, err error) {
 // 	path := fmt.Sprintf("channels/%s", channelID, "/%scontents")

@@ -74,6 +74,11 @@ arena.Channels.Get(ID, nil)
 ```Go
 arena.Channels.Connections(ID, nil)
 ```
+- [x] POST /v2/channels/:id/Connections
+```Go
+// connectChannelID will be connected to recipientChannelID
+a.Channels.Connect(connectChannelID, recipientChannelID)
+```
 - [x] GET /v2/channels/:id/contents
 ```Go
 arena.Channels.Contents(ID, nil)
