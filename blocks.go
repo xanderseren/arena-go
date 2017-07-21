@@ -141,17 +141,31 @@ func (s *BlocksService) AddSource(channelID string, entry string) (block *Block,
 	return
 }
 
-func (s *BlocksService) EditTitle(blockID string, entry string) (block *Block, err error) {
+func (s *BlocksService) EditTitle(blockID string, entry string) error {
 
 	data := url.Values{
 		"title": {entry},
 	}
 	path := "blocks/" + blockID
-	err = s.client.Put(path, nil, data)
-	if block != nil {
-		block.client = s.client
+	return s.client.Put(path, nil, data)
+}
+
+func (s *BlocksService) EditDescription(blockID string, entry string) error {
+
+	data := url.Values{
+		"description": {entry},
 	}
-	return
+	path := "blocks/" + blockID
+	return s.client.Put(path, nil, data)
+}
+
+func (s *BlocksService) EditContent(blockID string, entry string) error {
+
+	data := url.Values{
+		"content": {entry},
+	}
+	path := "blocks/" + blockID
+	return s.client.Put(path, nil, data)
 }
 
 // ListChannels earch returns a selection of blocks based on the search query q

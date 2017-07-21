@@ -74,18 +74,14 @@ func editTitle(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// }
 	token := os.Getenv("ARENA_TOKEN")
 	a := arena.NewClient(token)
-	block, err := a.Blocks.EditTitle(p.ByName("block"), "New Title")
+	err := a.Blocks.EditTitle(p.ByName("block"), "New Title")
 
 	if err != nil {
 		w.WriteHeader(200)
 		fmt.Fprintf(w, "%s", err)
 	} else {
-		ej, _ := json.Marshal(block)
-
-		// Write content-type, statuscode, payload
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		fmt.Fprintf(w, "%s", ej)
+		w.WriteHeader(204)
 	}
 }
 

@@ -145,10 +145,6 @@ func (c *Client) Put(path string, args Arguments, data url.Values) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, params.Encode())
 
-	// jsonString, err := json.Marshal(data)
-	fmt.Println(strings.NewReader(data.Encode()))
-
-	// strings.NewReader(data.Encode())
 	req, err := http.NewRequest("PUT", urlWithParams, strings.NewReader(data.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
@@ -156,7 +152,20 @@ func (c *Client) Put(path string, args Arguments, data url.Values) error {
 		return errors.Wrapf(err, "Invalid PUT request %s", url)
 	}
 
-	c.client.Do(req)
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP request failure on %s", url)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 204 {
+		return makeHttpClientError(url, resp)
+	}
+
+	// if err != nil {
+	// 	return errors.Wrapf(err, "Invalid PUT request %s", url)
+	// }
+	//
+	// c.client.Do(req)
 	// if err != nil {
 	// 	return errors.Wrapf(err, "HTTP request failure on %s", url)
 	// }

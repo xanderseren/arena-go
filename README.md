@@ -45,7 +45,21 @@ arena.Blocks.AddContent(channelID, content)
 // Source is a string. URL of content. Can be an Image, Embed, or Link.
 arena.Blocks.AddSource(channelID, source)
 ```
-- [ ] PUT /v2/blocks/:id
+- [x] PUT /v2/blocks/:id
+```Go
+// blockID is block slug or block ID
+// title is a string.
+arena.Blocks.EditTitle(blockID, title)
+
+// blockID is block slug or block ID
+// description is a string. Markdown formatted text.
+arena.Blocks.EditDescription(blockID, description)
+
+// blockID is block slug or block ID
+// content is a string. Markdown formatted text. For text block type only.
+arena.Blocks.EditContent(blockID, content)
+
+```
 - [ ] PUT /v2/channels/:channel_id/blocks/:id/selection
 - [ ] DELETE /v2/channel/:channel_id/blocks/:id
 
