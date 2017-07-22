@@ -23,6 +23,7 @@ type httpClientError struct {
 	code int
 }
 
+// makeHttpClientError makes a new error. Check anime docs for more info??
 func makeHttpClientError(url string, resp *http.Response) error {
 
 	body, _ := ioutil.ReadAll(resp.Body)

@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+// ChannelsService. MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
 type ChannelsService struct {
 	client *Client
 }
@@ -72,7 +72,8 @@ type MetadataStruct struct {
 	Description string `json:"description"`
 }
 
-// GetChannel returns a channel based on the ID or slug
+// Get Returns a complete representation of a channel based on the ID or
+// slug. Channel contents can be paginated.
 func (s *ChannelsService) Get(channelID string, args Arguments) (channel *Channel, err error) {
 	path := fmt.Sprintf("channels/%s", channelID)
 	err = s.client.Get(path, args, &channel)
@@ -82,7 +83,8 @@ func (s *ChannelsService) Get(channelID string, args Arguments) (channel *Channe
 	return
 }
 
-// GetChannel returns a channel based on the ID or slug
+// Contents returns all the contents of a channel. Nothing else
+// (collaborators, etc.) based on the ID or slug
 func (s *ChannelsService) Contents(channelID string, args Arguments) (blocks *ChannelContents, err error) {
 	path := "channels/" + channelID + "/contents"
 	err = s.client.Get(path, args, &blocks)
@@ -92,7 +94,9 @@ func (s *ChannelsService) Contents(channelID string, args Arguments) (blocks *Ch
 	return
 }
 
-// GetChannel returns a channel based on the ID or slug
+// Connections returns all of the channels connected to blocks in the channel
+// between channels on the ID or slug. For instance if one wanted to spider
+// the connections.
 func (s *ChannelsService) Connections(channelID string, args Arguments) (connections *Connections, err error) {
 	path := "channels/" + channelID + "/connections"
 	err = s.client.Get(path, args, &connections)
@@ -102,7 +106,8 @@ func (s *ChannelsService) Connections(channelID string, args Arguments) (connect
 	return
 }
 
-// GetChannel returns a channel based on the ID or slug
+// Collaborators returns all members that are part of a channel based on
+// the ID or slug. Does not return channel owner.
 func (s *ChannelsService) Collaborators(channelID string, args Arguments) (collaborators *Collaborators, err error) {
 	path := "channels/" + channelID + "/collaborators"
 	err = s.client.Get(path, args, &collaborators)
@@ -112,6 +117,8 @@ func (s *ChannelsService) Collaborators(channelID string, args Arguments) (colla
 	return
 }
 
+// Add creates a new channel. Title is title of the channel. Status sets the
+// visibility of the channel. Can be: ["public", "closed", "private"]
 func (s *ChannelsService) Add(title string, status string) (channel *Channel, err error) {
 	data := url.Values{
 		"title":  {title},
@@ -125,7 +132,8 @@ func (s *ChannelsService) Add(title string, status string) (channel *Channel, er
 	return
 }
 
-// https://api.are.na/v2/channels/82803/connections
+// Connect creates a new connection. connectChannelID is the ID of the channel
+// to connect, recipientChannelID is the ID of the channel to connect to
 func (s *ChannelsService) Connect(connectChannelID string, recipientChannelID string) (channel *Channel, err error) {
 	data := url.Values{
 		"connectable_id":   {connectChannelID},
@@ -139,13 +147,3 @@ func (s *ChannelsService) Connect(connectChannelID string, recipientChannelID st
 	}
 	return
 }
-
-// GetChannelContents returns a channels contents based on the ID r slug
-// func (c *Client) GetChannelContents(channelID string, args Arguments) (channel *Channel, err error) {
-// 	path := fmt.Sprintf("channels/%s", channelID, "/%scontents")
-// 	err = c.Get(path, args, &channel)
-// 	if channel != nil {
-// 		channel.client = c
-// 	}
-// 	return
-// }

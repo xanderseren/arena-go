@@ -28,8 +28,7 @@ type Client struct {
 	Users    *UsersService
 }
 
-// NewClient returns a Client configured with sane default
-// values.
+// NewClient returns a Client configured with sane default values.
 func NewClient(token string) *Client {
 	logger := logrus.New()
 	logger.Level = logrus.WarnLevel
@@ -60,6 +59,7 @@ func NewClient(token string) *Client {
 	return c
 }
 
+// Get does a GET request
 func (c *Client) Get(path string, args Arguments, target interface{}) error {
 
 	params := args.ToURLValues()
@@ -95,6 +95,7 @@ func (c *Client) Get(path string, args Arguments, target interface{}) error {
 	return nil
 }
 
+// Post does a POST request
 func (c *Client) Post(path string, args Arguments, data map[string][]string, target interface{}) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())
@@ -134,6 +135,7 @@ func (c *Client) Post(path string, args Arguments, data map[string][]string, tar
 	return nil
 }
 
+// Put does a PUT request
 func (c *Client) Put(path string, args Arguments, data url.Values) error {
 	params := args.ToURLValues()
 	c.Logger.Debugf("GET request to %s?%s", path, params.Encode())

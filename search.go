@@ -1,14 +1,6 @@
 package arena
 
-// type Search []int
-//
-// type Search interface {
-//   All() string
-// 	Blocks() string
-// 	Channels() string
-// }
-
-// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+// SearchService. MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
 type SearchService struct {
 	client         *Client
 }

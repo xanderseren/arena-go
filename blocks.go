@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-// MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
+// BlocksService. MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
 type BlocksService struct {
 	client *Client
 }
@@ -93,7 +93,7 @@ type AttachmentStruct *struct {
 	Url             string `json:"url"`
 }
 
-// Get returns a block based on the ID or Slug
+// Get returns returns the full representation of a block based on the ID or Slug
 func (s *BlocksService) Get(blockID string, args Arguments) (block *Block, err error) {
 	path := fmt.Sprintf("blocks/%s", blockID)
 	err = s.client.Get(path, args, &block)
@@ -113,6 +113,8 @@ func (s *BlocksService) Search(args Arguments) (searchStruct *SearchStruct, err 
 	return
 }
 
+// AddContent creates a new block and adds it to the specified channel.
+// Entry is textual content that's rendered with Github Flavored Markdown.
 func (s *BlocksService) AddContent(channelID string, entry string) (block *Block, err error) {
 
 	data := url.Values{
@@ -127,12 +129,13 @@ func (s *BlocksService) AddContent(channelID string, entry string) (block *Block
 	return
 }
 
+// AddSource creates a new block and adds it to the specified channel.
+// Entry is URL of content.
 func (s *BlocksService) AddSource(channelID string, entry string) (block *Block, err error) {
 
 	data := url.Values{
 		"source": {entry},
 	}
-	fmt.Println(data)
 	path := "channels/" + channelID + "/blocks"
 	err = s.client.Post(path, nil, data, &block)
 	if block != nil {
@@ -141,24 +144,29 @@ func (s *BlocksService) AddSource(channelID string, entry string) (block *Block,
 	return
 }
 
-func (s *BlocksService) EditTitle(blockID string, entry string) error {
+// EditTitle updates a block's attributes. title is the new title of the block
+func (s *BlocksService) EditTitle(blockID string, title string) error {
 
 	data := url.Values{
-		"title": {entry},
+		"title": {title},
 	}
 	path := "blocks/" + blockID
 	return s.client.Put(path, nil, data)
 }
 
-func (s *BlocksService) EditDescription(blockID string, entry string) error {
+// EditDescription updates a block's attributes. description is the new
+// description of the block. Markdown formatted text.
+func (s *BlocksService) EditDescription(blockID string, description string) error {
 
 	data := url.Values{
-		"description": {entry},
+		"description": {description},
 	}
 	path := "blocks/" + blockID
 	return s.client.Put(path, nil, data)
 }
 
+// EditDescription updates a block's attributes. content is the new
+// content of the block. Markdown formatted text. For text block type only.
 func (s *BlocksService) EditContent(blockID string, entry string) error {
 
 	data := url.Values{
@@ -168,7 +176,8 @@ func (s *BlocksService) EditContent(blockID string, entry string) error {
 	return s.client.Put(path, nil, data)
 }
 
-// ListChannels earch returns a selection of blocks based on the search query q
+// ListChannels earch returns a paginated list of channels the block exists in
+// based on the search query q
 func (s *BlocksService) ListChannels(blockID string, args Arguments) (searchStruct *SearchStruct, err error) {
 	path := "blocks/" + blockID + "/channels"
 	err = s.client.Get(path, args, &searchStruct)
@@ -177,14 +186,3 @@ func (s *BlocksService) ListChannels(blockID string, args Arguments) (searchStru
 	}
 	return
 }
-
-//
-// // EditBlock returns a channel based on the ID
-// func (c *Client) EditBlock(blockID string, args Arguments) (block *Block, err error) {
-// 	path := fmt.Sprintf("blocks/%s", blockID)
-// 	err = c.Put(path, args, &block)
-// 	if block != nil {
-// 		block.client = c
-// 	}
-// 	return
-// }

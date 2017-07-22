@@ -29,7 +29,7 @@ type UserStruct struct {
 	Class          string         `json:"class"`
 }
 
-// Search returns a selection of blocks based on the search query q
+// Search performs a search of users based on the search query q
 func (s *UsersService) Search(args Arguments) (searchStruct *SearchStruct, err error) {
 	path := "search/users"
 	err = s.client.Get(path, args, &searchStruct)
