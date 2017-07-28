@@ -147,3 +147,13 @@ func (s *ChannelsService) Connect(connectChannelID string, recipientChannelID st
 	}
 	return
 }
+
+// Search returns a selection of channels based on the search query q
+func (s *ChannelsService) Search(args Arguments) (searchStruct *SearchStruct, err error) {
+	path := "search/channels"
+	err = s.client.Get(path, args, &searchStruct)
+	if searchStruct != nil {
+		searchStruct.client = s.client
+	}
+	return
+}
