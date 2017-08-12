@@ -3,6 +3,7 @@ package arena
 import (
 	"fmt"
 	"net/url"
+	"sort"
 )
 
 // ChannelsService. MyAnimeList API docs: http://myanimelist.net/modules.php?go=api
@@ -80,6 +81,11 @@ func (s *ChannelsService) Get(channelID string, args Arguments) (channel *Channe
 	if channel != nil {
 		channel.client = s.client
 	}
+
+	sort.Slice(channel.Contents[:], func(i, j int) bool {
+		return channel.Contents[i].Position > channel.Contents[j].Position
+	})
+
 	return
 }
 

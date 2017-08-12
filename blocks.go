@@ -37,6 +37,7 @@ type Block struct {
 	BaseClass       string           `json:"base_class"`
 	Class           string           `json:"class"`
 	User            UserStruct       `json:"user"`
+	Position        int              `json:"position"`
 }
 
 type SourceStruct *struct {
